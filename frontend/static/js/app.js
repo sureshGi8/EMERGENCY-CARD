@@ -1,5 +1,5 @@
 // Configuration
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://emergency-card-backend.onrender.com';
 let authToken = localStorage.getItem('authToken');
 let currentUser = null;
 let currentCardData = null;
@@ -223,7 +223,7 @@ function generateCardHTML(cardData) {
         : 'None';
     
     // QR URL points to Type 1 detailed card
-    const qrDataUrl = `http://localhost:8000/emergency/${cardData.profile_id}/type1`;
+    const qrDataUrl = `https://emergency-card-backend.onrender.com/emergency/${cardData.profile_id}/type1`;
     const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrDataUrl)}`;
     
     const cardHTML = `
