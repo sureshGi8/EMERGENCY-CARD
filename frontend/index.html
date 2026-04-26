@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Card System</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" style="display: none;">
+        <div class="nav-container">
+            <div class="nav-brand">🚨 Emergency Card</div>
+            <div class="nav-menu">
+                <a href="#" onclick="showSection('dashboard')" class="nav-link active">Dashboard</a>
+                <a href="#" onclick="showSection('profile')" class="nav-link">Profile</a>
+                <a href="#" onclick="showSection('contacts')" class="nav-link">Contacts</a>
+                <a href="#" onclick="showSection('logs')" class="nav-link">Logs</a>
+                <a href="#" onclick="logout()" class="nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login/Register Section -->
+    <div id="authSection" class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-title">🚨 Emergency Card System</h1>
+            <p class="auth-subtitle">Instant access to life-saving information</p>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form">
+                <h2>Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <a href="#" onclick="toggleAuthForm()">Register here</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form" style="display: none;">
+                <h2>Create Account</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="regName" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="regEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="regPhone" placeholder="+91 98765 43210">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="regPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <a href="#" onclick="toggleAuthForm()">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Section -->
+    <div id="appSection" style="display: none;">
+        <!-- Dashboard -->
+        <div id="dashboard" class="section">
+            <div class="container">
+                <h1 class="section-title">Dashboard</h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👤</div>
+                        <div class="stat-value" id="userNameDisplay">Welcome!</div>
+                        <div class="stat-label">User Profile</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🩸</div>
+                        <div class="stat-value" id="bloodGroupDisplay">-</div>
+                        <div class="stat-label">Blood Group</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📞</div>
+                        <div class="stat-value" id="contactCountDisplay">0</div>
+                        <div class="stat-label">Emergency Contacts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="accessCountDisplay">0</div>
+                        <div class="stat-label">Card Accesses</div>
+                    </div>
+                </div>
+
+                <!-- Emergency Card Display -->
+                <div class="card-section" id="cardSection" style="display: none;">
+                    <h2>Your Emergency Card</h2>
+                    <div class="card-container" id="emergencyCardDisplay">
+                        <!-- Card will be injected here -->
+                    </div>
+                    <div class="card-actions">
+                        <button onclick="downloadCard()" class="btn btn-download">📥 Download Card</button>
+                        <p class="card-instruction">
+                            💡 Save this card on your phone and show it in emergencies
+                        </p>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Quick Tip:</strong> Complete your profile and add emergency contacts to generate your card!
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile" class="section" style="display: none;">
+            <div class="container">
+                <h1 class="section-title">Emergency Profile</h1>
+                
+                <form onsubmit="handleProfileSubmit(event)" class="profile-form">
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input type="number" id="age" placeholder="28">
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select id="gender">
+                                    <option value="">Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Height (cm)</label>
+                                <input type="text" id="height" placeholder="175 cm">
+                            </div>
+                            <div class="form-group">
+                                <label>Weight (kg)</label>
+                                <input type="text" id="weight" placeholder="70 kg">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Blood Group *</label>
+                            <select id="bloodGroup" required>
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea id="address" rows="2" placeholder="Your full address"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Medical Information</h3>
+                        
+                        <div class="form-group">
+                            <label>Allergies ⚠️</label>
+                            <input type="text" id="allergies" placeholder="Penicillin, Peanuts, Sulfa drugs (comma separated)">
+                            <small>List all known allergies - this is critical!</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Medical Conditions</label>
+                            <textarea id="medicalConditions" rows="3" placeholder="Asthma, Diabetes, Hypertension, etc."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Medications</label>
+                            <textarea id="medications" rows="3" placeholder="Salbutamol inhaler - 2 puffs as needed
+Metformin 500mg - twice daily"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Additional Medical Notes</label>
+                            <textarea id="medicalNotes" rows="2" placeholder="Any other important medical information"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large">💾 Save Profile & Generate Card</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contacts Section -->
+        <div id="contacts" class="section" style="display: none;">
+            <div class="container">
+                <h1 class="section-title">Emergency Contacts</h1>
+                
+                <div class="add-contact-form">
+                    <h3>Add New Contact</h3>
+                    <form onsubmit="handleContactSubmit(event)" class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Name *</label>
+                                <input type="text" id="contactName" required placeholder="Sita Devi">
+                            </div>
+                            <div class="form-group">
+                                <label>Relationship *</label>
+                                <input type="text" id="contactRelation" required placeholder="Mother">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="tel" id="contactPhone" required placeholder="+91 98765 43210">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="contactEmail" placeholder="contact@email.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="contactPriority">
+                                <option value="1">1 - Highest Priority</option>
+                                <option value="2">2 - High</option>
+                                <option value="3">3 - Medium</option>
+                                <option value="4">4 - Low</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">➕ Add Contact</button>
+                    </form>
+                </div>
+
+                <div class="contacts-list">
+                    <h3>My Emergency Contacts</h3>
+                    <div id="contactsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div id="logs" class="section" style="display: none;">
+            <div class="container">
+                <h1 class="section-title">Access Logs</h1>
+                <p class="section-subtitle">Track when your emergency card was accessed</p>
+                
+                <div id="logsList" class="logs-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="static/js/app.js"></script>
+</body>
+</html>
